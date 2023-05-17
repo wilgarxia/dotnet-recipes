@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SerilogLogging;
-using SerilogLogging.Services;
 using Serilog;
 
 var services = new ServiceCollection();

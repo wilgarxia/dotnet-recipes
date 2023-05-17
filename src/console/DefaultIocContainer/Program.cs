@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DefaultIocContainer;
-using DefaultIocContainer.Services;
 
 var services = new ServiceCollection();
 
