@@ -37,12 +37,14 @@ public class AppTests
         using var cts = new CancellationTokenSource();
         App app = new(_greeterService.Object, _consoleWriter.Object);
         string[] args = Array.Empty<string>();
+        _greeterService.Setup(x => x.SayGreeting()).Returns("Good morning");
 
         // Act
         await app.Run(args, cts.Token);
 
         // Assert
         _consoleWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(2));
+        _consoleWriter.Verify(x => x.WriteLine(It.Is<string>("Good morning!", StringComparer.Ordinal)), Times.Once);
     }     
 
     [Fact]
@@ -51,12 +53,14 @@ public class AppTests
         // Arrange
         using var cts = new CancellationTokenSource();
         App app = new(_greeterService.Object, _consoleWriter.Object);
-        string[] args = new string[] { "foo" };
+        string[] args = new string[] { "Wil" };
+        _greeterService.Setup(x => x.SayGreeting()).Returns("Good morning");
 
         // Act
         await app.Run(args, cts.Token);
 
         // Assert
         _consoleWriter.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Exactly(2));
+        _consoleWriter.Verify(x => x.WriteLine(It.Is<string>("Good morning Wil!", StringComparer.Ordinal)), Times.Once);
     }    
 }
