@@ -1,25 +1,28 @@
-using DefaultIocContainer.Services;
+using SerilogLogging.Services;
+using Serilog;
 
-namespace DefaultIocContainer;
+namespace SerilogLogging;
 
 public class App
 {
     private readonly IDummyService _service;
+    private readonly ILogger _logger;
 
-    public App(IDummyService service)
+    public App(IDummyService service, ILogger logger)
     {
         _service = service;
+        _logger = logger;
     }
 
     public async Task Run(CancellationToken ct)
     {
         while (!ct.IsCancellationRequested)
         {
-            Console.WriteLine("Doing some work...");
+            _logger.Information("Doing some work...");
 
             await _service.DoSomeWork(ct);
 
-            Console.WriteLine("Work completed.");
+            _logger.Information("Work completed.");
 
             await Task.Delay(3000);
         }

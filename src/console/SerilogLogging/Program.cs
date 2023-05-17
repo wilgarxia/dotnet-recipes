@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DefaultIocContainer;
-using DefaultIocContainer.Services;
+using SerilogLogging;
+using SerilogLogging.Services;
+using Serilog;
 
 var services = new ServiceCollection();
 
@@ -15,6 +16,8 @@ Console.CancelKeyPress += (sender, eventArgs) =>
 {
     cts.Cancel();
     eventArgs.Cancel = true;
+
+    Log.CloseAndFlush();
 
     Console.Clear();
     Console.WriteLine("Canceling...");
