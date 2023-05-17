@@ -1,4 +1,4 @@
-using Application;
+namespace Application.Helpers;
 
 public interface IDateTimeOffsetProvider
 {

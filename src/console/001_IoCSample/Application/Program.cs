@@ -4,7 +4,6 @@ using Application;
 var services = new ServiceCollection();
 
 services.AddServices();
-services.AddSingleton<string[]>(args);
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetRequiredService<App>();
@@ -19,4 +18,4 @@ Console.CancelKeyPress += (sender, eventArgs) =>
     Console.WriteLine("\nCanceling...");
 };
 
-await app.Run(cts.Token);
+await app.Run(args, cts.Token);

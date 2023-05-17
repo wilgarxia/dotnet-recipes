@@ -1,4 +1,5 @@
 using Application;
+using Application.Helpers;
 using Application.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,14 +10,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<IDateTimeOffsetProvider, DateTimeOffsetProvider>();
         services.AddSingleton<IGreeterService, GreeterService>();
+        services.AddSingleton<IConsoleWriter, ConsoleWriter>();
         services.AddSingleton<App>();
-
-        return services;
-    }
-
-    public static IServiceCollection AddParameters(this IServiceCollection services, string[] parameters)
-    {
-        services.AddSingleton<string[]>(parameters);
 
         return services;
     }
