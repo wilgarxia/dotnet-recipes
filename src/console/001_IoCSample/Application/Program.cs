@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using DefaultIocContainer;
+using Application;
 
 var services = new ServiceCollection();
 
 services.AddServices();
+services.AddSingleton<string[]>(args);
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetRequiredService<App>();
@@ -15,8 +16,7 @@ Console.CancelKeyPress += (sender, eventArgs) =>
     cts.Cancel();
     eventArgs.Cancel = true;
 
-    Console.Clear();
-    Console.WriteLine("Canceling...");
+    Console.WriteLine("\nCanceling...");
 };
 
 await app.Run(cts.Token);

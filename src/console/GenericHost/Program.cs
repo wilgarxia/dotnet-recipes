@@ -15,6 +15,9 @@ try
 
     var builder = Host.CreateDefaultBuilder(args); 
 
+    // graceful shutdown
+    builder.UseConsoleLifetime(); 
+    
     builder.ConfigureServices(services =>
         {
             services.AddHostedService<Worker>();
