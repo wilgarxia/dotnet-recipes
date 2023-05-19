@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Application;
+using Sample;
 
 var services = new ServiceCollection();
 
 services.AddServices();
 
 var serviceProvider = services.BuildServiceProvider();
-var app = serviceProvider.GetRequiredService<App>();
+var app = serviceProvider.GetRequiredService<Application>();
 
 using var cts = new CancellationTokenSource();
 

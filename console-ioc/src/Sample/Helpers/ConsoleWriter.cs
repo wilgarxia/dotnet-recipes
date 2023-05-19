@@ -1,4 +1,4 @@
-namespace Application.Helpers;
+namespace Sample.Helpers;
 
 public interface IConsoleWriter
 {

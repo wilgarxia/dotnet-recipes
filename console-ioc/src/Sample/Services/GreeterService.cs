@@ -1,6 +1,6 @@
-using Application.Helpers;
+using Sample.Helpers;
 
-namespace Application.Services;
+namespace Sample.Services;
 
 public interface IGreeterService
 {
