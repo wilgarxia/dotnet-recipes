@@ -15,7 +15,7 @@ public class ApplicationTests
     }
 
     [Fact]
-    public async Task Run_ShouldRunAndWriteToConsole_WhenCalled()
+    public async Task Run_ShouldWriteToConsole_WhenCalled()
     {
         // Arrange
         using var cts = new CancellationTokenSource();
