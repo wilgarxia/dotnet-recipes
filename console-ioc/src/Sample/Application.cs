@@ -1,42 +1,32 @@
-using System.Text;
-using Sample.Services;
 using Sample.Helpers;
+using Sample.Services;
 
 namespace Sample;
 
-public class Application
+public interface IApplication
 {
-    private readonly IGreeterService _greeterService;
-    private readonly IConsoleWriter _consoleWriter;
+    Task Run(CancellationToken ct);
+}
 
-    public Application(IGreeterService greeterService, IConsoleWriter consoleWriter)
+public class Application : IApplication
+{
+    private readonly IConsoleWriter _consoleWriter;
+    private readonly IDummyService _dummyService;
+
+    public Application(
+        IConsoleWriter consoleWriter, 
+        IDummyService dummyService)
     {
-        _greeterService = greeterService;
         _consoleWriter = consoleWriter;
+        _dummyService = dummyService;
     }
 
-    public async Task Run(string[] parameters, CancellationToken ct)
+    public async Task Run(CancellationToken ct)
     {
-        _consoleWriter.WriteLine(
-            "Welcome to the Greeting Service. \nPlease wait a few seconds while your Greeting is being generated...\n");
+        _consoleWriter.WriteLine("Welcome to the IoC sample.");
 
-        // This Delay makes cancelling possible by pressing Ctrl + C.
-        // It's here just to demonstrate console cancelling using Cancellation Tokens and CancelKeyPress Event.
-        try
-        {
-            await Task.Delay(3000, ct);
-        }
-        catch (TaskCanceledException) 
-        {
-            return;
-        }
+        await _dummyService.DoSomeWork(ct);
 
-        StringBuilder builder = new(_greeterService.SayGreeting());
-
-        builder.Append(parameters.Length > 0 ? $" {parameters[0]}!" : "!");
-
-        _consoleWriter.WriteLine(builder.ToString());
-
-        await Task.CompletedTask;
+        _consoleWriter.WriteLine("IoC sample is complete.");
     }
 }

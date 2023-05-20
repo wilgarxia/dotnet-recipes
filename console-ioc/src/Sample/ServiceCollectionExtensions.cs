@@ -8,10 +8,9 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IDateTimeOffsetProvider, DateTimeOffsetProvider>();
-        services.AddSingleton<IGreeterService, GreeterService>();
         services.AddSingleton<IConsoleWriter, ConsoleWriter>();
-        services.AddSingleton<Application>();
+        services.AddSingleton<IDummyService, DummyService>();
+        services.AddSingleton<IApplication, Application>();
 
         return services;
     }

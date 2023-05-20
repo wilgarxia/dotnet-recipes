@@ -6,60 +6,26 @@ namespace Sample.Tests;
 public class ApplicationTests
 {
     private readonly IConsoleWriter _consoleWriter = Substitute.For<IConsoleWriter>();
-    private readonly IGreeterService _greeterService = Substitute.For<IGreeterService>();
-    private readonly Application _application;
+    private readonly IDummyService _dummyService = Substitute.For<IDummyService>();
+    private readonly IApplication _application;
 
     public ApplicationTests()
     {
-        _application = new(_greeterService, _consoleWriter);
+        _application = new Application(_consoleWriter, _dummyService);
     }
 
     [Fact]
-    public async Task Run_ShouldNotGreet_WhenCancellationTokenIsRequested()
+    public async Task Run_ShouldRunAndWriteToConsole_WhenCalled()
     {
         // Arrange
         using var cts = new CancellationTokenSource();
-        string[] args = Array.Empty<string>();
 
         // Act
-        cts.Cancel();
-        await _application.Run(args, cts.Token);
-
-        // Assert
-        _consoleWriter.Received(1).WriteLine(Arg.Any<string>());
-    } 
-
-    [Fact]
-    public async Task Run_ShouldGreet_WhenParameterIsEmpty()
-    {
-        // Arrange
-        using var cts = new CancellationTokenSource();
-        string[] args = Array.Empty<string>();
-
-        _greeterService.SayGreeting().Returns("Good morning");
-
-        // Act
-        await _application.Run(args, cts.Token);
+        _dummyService.DoSomeWork(Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
+        
+        await _application.Run(cts.Token);
 
         // Assert
         _consoleWriter.Received(2).WriteLine(Arg.Any<string>());
-        _consoleWriter.Received(1).WriteLine(Arg.Is("Good morning!"));
-    }     
-
-    [Fact]
-    public async Task Run_ShouldGreet_WhenParameterContainsAtLeastOneValue()
-    {
-        // Arrange
-        using var cts = new CancellationTokenSource();
-        string[] args = new string[] { "Foo" };
-
-        _greeterService.SayGreeting().Returns("Good morning");
-
-        // Act
-        await _application.Run(args, cts.Token);
-
-        // Assert
-        _consoleWriter.Received(2).WriteLine(Arg.Any<string>());
-        _consoleWriter.Received(1).WriteLine(Arg.Is("Good morning Foo!"));
-    }    
+    }
 }

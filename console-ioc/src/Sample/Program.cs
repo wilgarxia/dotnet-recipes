@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+
 using Sample;
 
 var services = new ServiceCollection();
@@ -6,7 +7,7 @@ var services = new ServiceCollection();
 services.AddServices();
 
 var serviceProvider = services.BuildServiceProvider();
-var app = serviceProvider.GetRequiredService<Application>();
+var app = serviceProvider.GetRequiredService<IApplication>();
 
 using var cts = new CancellationTokenSource();
 
@@ -18,4 +19,12 @@ Console.CancelKeyPress += (sender, eventArgs) =>
     Console.WriteLine("\nCanceling...");
 };
 
-await app.Run(args, cts.Token);
+try
+{
+    await app.Run(cts.Token);
+}
+catch (Exception ex)
+{
+    if (ex is not TaskCanceledException)
+        Console.WriteLine(ex.Message);
+}
