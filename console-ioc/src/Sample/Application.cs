@@ -3,12 +3,7 @@ using Sample.Services;
 
 namespace Sample;
 
-public interface IApplication
-{
-    Task Run(CancellationToken ct);
-}
-
-public class Application : IApplication
+internal class Application : IApplication
 {
     private readonly IConsoleWriter _consoleWriter;
     private readonly IDummyService _dummyService;

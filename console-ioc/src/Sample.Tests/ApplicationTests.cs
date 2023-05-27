@@ -7,23 +7,20 @@ public class ApplicationTests
 {
     private readonly IConsoleWriter _consoleWriter = Substitute.For<IConsoleWriter>();
     private readonly IDummyService _dummyService = Substitute.For<IDummyService>();
-    private readonly IApplication _application;
+    private readonly IApplication _sut;
+    private readonly CancellationTokenSource _cts = new();
 
-    public ApplicationTests()
-    {
-        _application = new Application(_consoleWriter, _dummyService);
-    }
+    public ApplicationTests() => 
+        _sut = new Application(_consoleWriter, _dummyService);
 
     [Fact]
     public async Task Run_ShouldWriteToConsole_WhenCalled()
     {
         // Arrange
-        using var cts = new CancellationTokenSource();
+        _dummyService.DoSomeWork(Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
 
         // Act
-        _dummyService.DoSomeWork(Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
-        
-        await _application.Run(cts.Token);
+        await _sut.Run(_cts.Token);
 
         // Assert
         _consoleWriter.Received(2).WriteLine(Arg.Any<string>());

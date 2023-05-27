@@ -4,17 +4,17 @@ namespace Application.Tests.Services;
 
 public class DummyServiceTests
 {
-    private readonly IDummyService _dummyService = new DummyService();
+    private readonly IDummyService _sut = new DummyService();
+    private readonly CancellationTokenSource _cts = new();
 
     [Fact]
     public async Task DoSomeWork_ShouldThrowAnException_WhenCancellationTokenIsCancelled()
     {
         // Arrange
-        using var cts = new CancellationTokenSource();
-
+        
         // Act
-        cts.Cancel();
-        Func<Task> result = async () => await _dummyService.DoSomeWork(cts.Token);
+        _cts.Cancel();
+        Func<Task> result = async () => await _sut.DoSomeWork(_cts.Token);
 
         // Assert
         await result.Should().ThrowAsync<TaskCanceledException>();
@@ -24,10 +24,9 @@ public class DummyServiceTests
     public async Task DoSomeWork_ShouldNotThrowAnException_WhenCancellationTokenIsNotCancelled()
     {
         // Arrange
-        using var cts = new CancellationTokenSource();
 
         // Act
-        Func<Task> result = async () => await _dummyService.DoSomeWork(cts.Token);
+        Func<Task> result = async () => await _sut.DoSomeWork(_cts.Token);        
 
         // Assert
         await result.Should().CompleteWithinAsync(TimeSpan.FromSeconds(5));

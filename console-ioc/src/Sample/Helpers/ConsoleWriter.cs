@@ -1,6 +1,6 @@
 namespace Sample.Helpers;
 
-public class ConsoleWriter : IConsoleWriter
+internal class ConsoleWriter : IConsoleWriter
 {
     public void WriteLine(string text) => Console.WriteLine(text);
 }
